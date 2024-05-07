@@ -4,12 +4,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Background Image</title>
+
 <style>
+
   body {
     margin: 0;
     padding: 0;
-    background-image: url(istockphoto-129179697-612x612.jpg);
+    background-image: url(background_image.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -17,13 +18,23 @@
 </style>
 </head>
 <body>
-    <h1 style="font-size: 60px; margin-left: 160px; color: rgb(78, 39, 11);">CUSTOMER LOGIN PAGE</h1>
     <center>
-    <div style="margin-top: 100px;">
+      <div style="background-color: rgba(0, 0, 0, 0.7); width: 400px; height: 400px; position: absolute; top: 120px; left: 450px;">
+        <div style="color: white; font-size: 25px; font-family: 'Playfair Display', serif;">
+          <h1 class="text-white text-5xl tm-logo-font mb-2">Customer Login</h1>
+        </div>
+    <div style="margin-top: 50px;">
     <form>
         
-        <input style="width: 300px;
-         height: 20px;
+        <input style="width: 250px;
+         height: 25px;
+         position: absolute;
+         left: 70px;
+         top: 160px;
+         background-color: rgba(0, 0, 0, 0.5);
+         color: white;
+         font-style:oblique;
+         font-family: 'Playfair Display', serif;
          border-radius: 10px" 
          type="text" 
          id="number" 
@@ -31,9 +42,17 @@
          placeholder="Phone Number" >
         <br>
         <br>
-        <input style="width: 300px; 
-        height: 20px; 
+        <input style="width: 250px; 
+        height: 25px; 
+        position: absolute;
+        left: 70px;
+        top: 205px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        font-style:oblique;
+        font-family: 'Playfair Display', serif;
         border-radius: 10px;" 
+        
         type="password" 
         id="password" 
         name="password" 
@@ -41,20 +60,27 @@
         <br>
         <input type="submit" 
         value="LOG IN" 
-        style="width: 120px;
-        height: 30px; 
-        border-radius: 20px;
+        style="height: 30px;
+        position: absolute;
+        left: 150px;
+        top: 245px;
+        width:100px;
         margin-top: 20px;
-        background-color: rgb(78, 39, 11);
-        color:white;">
+        background-color: rgba(0, 0, 0, 0.5);
+        color:rgb(214, 192, 167);
+        font-size: 12px;
+        font-family: 'Playfair Display', serif;
+        border-radius: 10px;">
+
     </div>
     <br>
-    <div style="color: aliceblue;"
-      <p>Don't have an account? <a href="customer sign up page.html">Sign up</a>
+    <div style="position: absolute; left: 110px; top: 315px;color: white; font-size: 15px; font-family: 'Playfair Display', serif;"
+      <p>Don't have an account? <a href="customer sign up page.html" style="color:rgb(214, 192, 167); font-family: 'Playfair Display', serif;">Sign up </a>
       </p>
     </div>
     </form>
     </div>
+  </div>
 
     </center>
 </body>
