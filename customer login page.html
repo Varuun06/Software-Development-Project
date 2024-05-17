@@ -10,7 +10,7 @@
   body {
     margin: 0;
     padding: 0;
-    background-image: url(background_image.jpg);
+    background-image: url("/static/img/background_image.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -24,7 +24,7 @@
           <h1 class="text-white text-5xl tm-logo-font mb-2">Customer Login</h1>
         </div>
     <div style="margin-top: 50px;">
-    <form>
+    <form method="post", action="{{ url_for('main') }}">
         
         <input style="width: 250px;
          height: 25px;
@@ -75,6 +75,7 @@
     </div>
     <br>
     <div style="position: absolute; left: 110px; top: 315px;color: white; font-size: 15px; font-family: 'Playfair Display', serif;"
+      <p><a href="/app/forgot_password" style="color:rgb(214, 192, 167); font-family: 'Playfair Display', serif;">Forgot Password?</a></p>
       <p>Don't have an account? <a href="customer sign up page.html" style="color:rgb(214, 192, 167); font-family: 'Playfair Display', serif;">Sign up </a>
       </p>
     </div>
