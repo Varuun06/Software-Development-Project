@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuisine Explorer</title>
+    <style>
+        /* Add your CSS styling here */
+    </style>
+</head>
+<body>
+    <div id="cuisine_buttons" class="cuisine-buttons"></div>
+    <div id="category_buttons" class="category-buttons"></div>
+    <div id="food_list" class="food-list"></div>
+    <button id="calculate_button">Calculate Total Price</button>
+    <p id="total_price_label"></p>
+
+    <script>
+        // Define TreeNode class
+        class TreeNode {
+            constructor(data, price=0) {
+                this.data = data;
+                this.price = price;
+                this.children = [];
+            }
+
+            add_child(child_node) {
+                this.children.push(child_node);
+            }
+        }
+
+        // Define CuisineTree class
+        class CuisineTree {
+            constructor() {
+                this.root = new TreeNode("Cuisines");
+            }
+
+            add_cuisine(cuisine_name, appetizers, appetizer_prices, main_dishes, main_dish_prices) {
+                let cuisine_node = new TreeNode(cuisine_name);
+                let appetizers_node = new TreeNode("Appetizers");
+                let main_dishes_node = new TreeNode("Main Dishes");
+
+                for (let i = 0; i < appetizers.length; i++) {
+                    appetizers_node.add_child(new TreeNode(appetizers[i], appetizer_prices[i]));
+                }
+
+                for (let i = 0; i < main_dishes.length; i++) {
+                    main_dishes_node.add_child(new TreeNode(main_dishes[i], main_dish_prices[i]));
+                }
+
+                cuisine_node.add_child(appetizers_node);
+                cuisine_node.add_child(main_dishes_node);
+
+                this.root.add_child(cuisine_node);
+            }
+
+            get_cuisines() {
+                let cuisines = [];
+                for (let child of this.root.children) {
+                    cuisines.push(child.data);
+                }
+                return cuisines;
+            }
+
+            get_categories(cuisine_name) {
+                for (let child of this.root.children) {
+                    if (child.data == cuisine_name) {
+                        let categories = [];
+                        for (let category of child.children) {
+                            categories.push(category.data);
+                        }
+                        return categories;
+                    }
+                }
+            }
+
+            get_items(cuisine_name, category_name) {
+                for (let child of this.root.children) {
+                    if (child.data == cuisine_name) {
+                        for (let category of child.children) {
+                            if (category.data == category_name) {
+                                let items = [];
+                                for (let item of category.children) {
+                                    items.push({name: item.data, price: item.price});
+                                }
+                                return items;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Instantiate CuisineTree
+        let cuisine_tree = new CuisineTree();
+
+        // Add cuisines
+        cuisine_tree.add_cuisine("Italian",
+            ["Bruschetta", "Caprese Salad", "Garlic Bread"],
+            [100, 150, 155],
+            ["Pizza", "Pasta", "Lasagna"],
+            [200, 230, 220]);
+
+        cuisine_tree.add_cuisine("Mexican",
+            ["Guacamole", "Queso Fundido", "Nachos"],
+            [100, 230, 450],
+            ["Tacos", "Burritos", "Enchiladas"],
+            [110, 130, 150]);
+
+        cuisine_tree.add_cuisine("Chinese",
+            ["Egg Rolls", "Spring Rolls", "Wontons"],
+            [5, 6, 7],
+            ["Kung Pao Chicken", "Fried Rice", "Chow Mein"],
+            [14, 12, 13]);
+
+        cuisine_tree.add_cuisine("Indian",
+            ["Samosa", "Pakora", "Paneer Tikka"],
+            [4, 5, 6],
+            ["Butter Chicken", "Biryani", "Naan"],
+            [15, 16, 3]);
+
+        // Function to display items for a specific category
+        function show_items_for_category(cuisine_name, category_name) {
+            let items = cuisine_tree.get_items(cuisine_name, category_name);
+            let food_list = document.getElementById('food_list');
+            food_list.innerHTML = '';
+            for (let item of items) {
+                let food_item = document.createElement('div');
+                let checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = item.price;
+                checkbox.addEventListener('change', calculate_total_price);
+                food_item.appendChild(checkbox);
+                food_item.innerHTML += `${item.name} - Rs${item.price}`;
+                food_list.appendChild(food_item);
+            }
+        }
+
+        // Function to calculate total price
+        function calculate_total_price() {
+            let checkboxes = document.querySelectorAll('#food_list input[type="checkbox"]:checked');
+            let total_price = 0;
+            checkboxes.forEach(checkbox => {
+                total_price += parseFloat(checkbox.value);
+            });
+            document.getElementById('total_price_label').textContent = `Total Price: Rs${total_price.toFixed(2)}`;
+        }
+
+        // Add event listener for the Calculate Total Price button
+        let calculate_button = document.getElementById('calculate_button');
+        calculate_button.addEventListener('click', calculate_total_price);
+
+        // Populate cuisine buttons
+        let cuisines = cuisine_tree.get_cuisines();
+        let cuisine_buttons_div = document.getElementById('cuisine_buttons');
+        for (let cuisine of cuisines) {
+            let cuisine_button = document.createElement('button');
+            cuisine_button.textContent = cuisine;
+            cuisine_button.addEventListener('click', () => {
+                let categories = cuisine_tree.get_categories(cuisine);
+                let category_buttons_div = document.getElementById('category_buttons');
+                category_buttons_div.innerHTML = '';
+                for (let category of categories) {
+                    let category_button = document.createElement('button');
+                    category_button.textContent = category;
+                    category_button.addEventListener('click', () => show_items_for_category(cuisine, category));
+                    category_buttons_div.appendChild(category_button);
+                }
+            });
+            cuisine_buttons_div.appendChild(cuisine_button);
+        }
+    </script>
+</body>
+</html>
