@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Cuisine Explorer</title>
     <style>
         /* Add your CSS styling here */
@@ -96,28 +96,28 @@
 
         // Add cuisines
         cuisine_tree.add_cuisine("Italian",
-            ["Bruschetta", "Caprese Salad", "Garlic Bread"],
-            [100, 150, 155],
-            ["Pizza", "Pasta", "Lasagna"],
-            [200, 230, 220]);
+            ["Bruschetta", "Caprese Salad", "Garlic Bread","caponeta","goat cheese dip","antipasto platter","marinated olives","atbread mini pizza","burrattta with tomatoes","easy stuffed mushroom"],
+            [100,150,155,124,80,130,145,135,200,170],
+            ["Pizza", "Pasta", "Lasagna", "Risotto", "Tiramisu","Truffle","spaghetti","Fiorentina Steak","homemade papardelle","baked italian sub","creamy tuscan chicken pasta"],
+            [200,230,220,245,270,245,260,230,345,300,315]);
 
         cuisine_tree.add_cuisine("Mexican",
-            ["Guacamole", "Queso Fundido", "Nachos"],
-            [100, 230, 450],
-            ["Tacos", "Burritos", "Enchiladas"],
-            [110, 130, 150]);
+            ["Guacamole", "Queso Fundido", "Nachos","salsa","Tamales","Empanadas","Ceviche","Mexican Shrimp Cocktail","Molletes","Aguachile","Cactus Salad","Esquites"],
+            [100,230,450,460,280,340,290,310,340,230],
+            ["Tacos", "Burritos", "Enchiladas", "Quesadillas","Chicken fajitaa tacos","dorito casserole","chicken falutas"],
+            [110, 130, 150, 120,80,50,100]);
 
         cuisine_tree.add_cuisine("Chinese",
-            ["Egg Rolls", "Spring Rolls", "Wontons"],
-            [5, 6, 7],
-            ["Kung Pao Chicken", "Fried Rice", "Chow Mein"],
-            [14, 12, 13]);
+            ["Egg Rolls", "Spring Rolls", "Wontons","pancakes","hot and sour soup","chicken sesame wings","potstickers"],
+            [50, 60, 70,60,75,100,120],
+            ["Kung Pao Chicken", "Fried Rice", "Chow Mein","sweet and sour pork","hot pot","beef with broccoli","mapo tofu"],
+            [140, 120, 130,70,80,90,100]);
 
         cuisine_tree.add_cuisine("Indian",
-            ["Samosa", "Pakora", "Paneer Tikka"],
-            [4, 5, 6],
-            ["Butter Chicken", "Biryani", "Naan"],
-            [15, 16, 3]);
+            ["Samosa", "Pakora", "Paneer Tikka","chicken tikka","dahi puri","bhel puri","pani puri"],
+            [20, 50,60,50,40,50,60],
+            ["Butter Chicken", "Biryani", "Naan","rogan josh","palak paneer","dal makhani","paneer butter masala","channa masala"],
+            [200,250,280,285,250,230,270,300]);
 
         // Function to display items for a specific category
         function show_items_for_category(cuisine_name, category_name) {
@@ -145,7 +145,6 @@
             });
             document.getElementById('total_price_label').textContent = `Total Price: Rs${total_price.toFixed(2)}`;
         }
-
         // Add event listener for the Calculate Total Price button
         let calculate_button = document.getElementById('calculate_button');
         calculate_button.addEventListener('click', calculate_total_price);
