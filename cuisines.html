@@ -2,172 +2,100 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Cuisine Explorer</title>
-    <style>
-        /* Add your CSS styling here */
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
 </head>
 <body>
-    <div id="cuisine_buttons" class="cuisine-buttons"></div>
-    <div id="category_buttons" class="category-buttons"></div>
-    <div id="food_list" class="food-list"></div>
-    <button id="calculate_button">Calculate Total Price</button>
-    <p id="total_price_label"></p>
+    <h1>Menu</h1>
+
+    <!-- Display food items -->
+    <div id="food_list_italian">
+        <h2>Italian</h2>
+    </div>
+    <div id="food_list_mexican">
+        <h2>Mexican</h2>
+    </div>
+    <div id="food_list_chinese">
+        <h2>Chinese</h2>
+    </div>
+
+    <!-- Calculate total price -->
+    <p>Total Price: Rs<span id="total_price_label">0.00</span></p>
 
     <script>
-        // Define TreeNode class
-        class TreeNode {
-            constructor(data, price=0) {
-                this.data = data;
-                this.price = price;
-                this.children = [];
-            }
+        // Define food items with prices for each cuisine
+        const cuisines = {
+            Italian: [
+                { name: "Pizza", price: 200 },
+                { name: "veg Pasta", price: 130 },
+                { name: "Bruschetta", price: 180 },
+                { name: "Caprese salad", price: 220 },
+                { name: "Garlic bread", price: 120 },
+                { name: "Lasagna", price: 220 },
+                { name: "chicken pasta", price: 160 },
+            ],
+            Mexican: [
+                { name: "Tacos", price: 110 },
+                { name: "Burritos", price: 130 },
+                { name: "Enchiladas", price: 150 },
+                { name: "Guacamole", price: 220 },
+                { name: "Nachos", price: 220 },
+                { name: "Queso fundido", price: 220 },
+            ],
+            Chinese: [
+                { name: "Kung Pao Chicken", price: 140 },
+                { name: "Fried Rice", price: 120 },
+                { name: "Chow Mein", price: 130 },
+                { name: "egg rolls", price:50 },
+                { name: "spring rolls", price:70 },
+                { name: "wontons", price: 120 },
+            Indian: [
+                { name: "veg biriyani", price: 140 },
+                { name: "Chicken biriyani", price: 220 },
+                { name: "Chicken lolipop", price: 130 },
+                { name: "ilaneer paayasam", price:80 },
+                { name: "fish finger", price:140 },
+                { name: "prawn biriyani", price: 190 },
+            ]
+        };
 
-            add_child(child_node) {
-                this.children.push(child_node);
-            }
+        // Function to display food items for each cuisine
+        function displayFoodItems() {
+            displayFoodList('Italian', 'food_list_italian');
+            displayFoodList('Mexican', 'food_list_mexican');
+            displayFoodList('Chinese', 'food_list_chinese');
+            displayFoodList('Indian', 'food_list_indian');
         }
 
-        // Define CuisineTree class
-        class CuisineTree {
-            constructor() {
-                this.root = new TreeNode("Cuisines");
-            }
-
-            add_cuisine(cuisine_name, appetizers, appetizer_prices, main_dishes, main_dish_prices) {
-                let cuisine_node = new TreeNode(cuisine_name);
-                let appetizers_node = new TreeNode("Appetizers");
-                let main_dishes_node = new TreeNode("Main Dishes");
-
-                for (let i = 0; i < appetizers.length; i++) {
-                    appetizers_node.add_child(new TreeNode(appetizers[i], appetizer_prices[i]));
-                }
-
-                for (let i = 0; i < main_dishes.length; i++) {
-                    main_dishes_node.add_child(new TreeNode(main_dishes[i], main_dish_prices[i]));
-                }
-
-                cuisine_node.add_child(appetizers_node);
-                cuisine_node.add_child(main_dishes_node);
-
-                this.root.add_child(cuisine_node);
-            }
-
-            get_cuisines() {
-                let cuisines = [];
-                for (let child of this.root.children) {
-                    cuisines.push(child.data);
-                }
-                return cuisines;
-            }
-
-            get_categories(cuisine_name) {
-                for (let child of this.root.children) {
-                    if (child.data == cuisine_name) {
-                        let categories = [];
-                        for (let category of child.children) {
-                            categories.push(category.data);
-                        }
-                        return categories;
-                    }
-                }
-            }
-
-            get_items(cuisine_name, category_name) {
-                for (let child of this.root.children) {
-                    if (child.data == cuisine_name) {
-                        for (let category of child.children) {
-                            if (category.data == category_name) {
-                                let items = [];
-                                for (let item of category.children) {
-                                    items.push({name: item.data, price: item.price});
-                                }
-                                return items;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Instantiate CuisineTree
-        let cuisine_tree = new CuisineTree();
-
-        // Add cuisines
-        cuisine_tree.add_cuisine("Italian",
-            ["Bruschetta", "Caprese Salad", "Garlic Bread","caponeta","goat cheese dip","antipasto platter","marinated olives","atbread mini pizza","burrattta with tomatoes","easy stuffed mushroom"],
-            [100,150,155,124,80,130,145,135,200,170],
-            ["Pizza", "Pasta", "Lasagna", "Risotto", "Tiramisu","Truffle","spaghetti","Fiorentina Steak","homemade papardelle","baked italian sub","creamy tuscan chicken pasta"],
-            [200,230,220,245,270,245,260,230,345,300,315]);
-
-        cuisine_tree.add_cuisine("Mexican",
-            ["Guacamole", "Queso Fundido", "Nachos","salsa","Tamales","Empanadas","Ceviche","Mexican Shrimp Cocktail","Molletes","Aguachile","Cactus Salad","Esquites"],
-            [100,230,450,460,280,340,290,310,340,230],
-            ["Tacos", "Burritos", "Enchiladas", "Quesadillas","Chicken fajitaa tacos","dorito casserole","chicken falutas"],
-            [110, 130, 150, 120,80,50,100]);
-
-        cuisine_tree.add_cuisine("Chinese",
-            ["Egg Rolls", "Spring Rolls", "Wontons","pancakes","hot and sour soup","chicken sesame wings","potstickers"],
-            [50, 60, 70,60,75,100,120],
-            ["Kung Pao Chicken", "Fried Rice", "Chow Mein","sweet and sour pork","hot pot","beef with broccoli","mapo tofu"],
-            [140, 120, 130,70,80,90,100]);
-
-        cuisine_tree.add_cuisine("Indian",
-            ["Samosa", "Pakora", "Paneer Tikka","chicken tikka","dahi puri","bhel puri","pani puri"],
-            [20, 50,60,50,40,50,60],
-            ["Butter Chicken", "Biryani", "Naan","rogan josh","palak paneer","dal makhani","paneer butter masala","channa masala"],
-            [200,250,280,285,250,230,270,300]);
-
-        // Function to display items for a specific category
-        function show_items_for_category(cuisine_name, category_name) {
-            let items = cuisine_tree.get_items(cuisine_name, category_name);
-            let food_list = document.getElementById('food_list');
-            food_list.innerHTML = '';
-            for (let item of items) {
-                let food_item = document.createElement('div');
-                let checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
+        // Function to display food items for a specific cuisine
+        function displayFoodList(cuisine, containerId) {
+            const foodListContainer = document.getElementById(containerId);
+            const foodList = cuisines[cuisine];
+            foodListContainer.innerHTML = `<h2>${cuisine}</h2>`;
+            foodList.forEach(item => {
+                const foodItem = document.createElement("div");
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
                 checkbox.value = item.price;
-                checkbox.addEventListener('change', calculate_total_price);
-                food_item.appendChild(checkbox);
-                food_item.innerHTML += `${item.name} - Rs${item.price}`;
-                food_list.appendChild(food_item);
-            }
+                checkbox.addEventListener("change", updateTotalPrice);
+                foodItem.textContent = `${item.name} - Rs${item.price}`;
+                foodItem.appendChild(checkbox);
+                foodListContainer.appendChild(foodItem);
+            });
         }
 
-        // Function to calculate total price
-        function calculate_total_price() {
-            let checkboxes = document.querySelectorAll('#food_list input[type="checkbox"]:checked');
-            let total_price = 0;
+        // Function to update total price when checkboxes change
+        function updateTotalPrice() {
+            let totalPrice = 0;
+            const checkboxes = document.querySelectorAll("input[type='checkbox']:checked");
             checkboxes.forEach(checkbox => {
-                total_price += parseFloat(checkbox.value);
+                totalPrice += parseFloat(checkbox.value);
             });
-            document.getElementById('total_price_label').textContent = `Total Price: Rs${total_price.toFixed(2)}`;
+            document.getElementById("total_price_label").textContent = totalPrice.toFixed(2);
         }
-        // Add event listener for the Calculate Total Price button
-        let calculate_button = document.getElementById('calculate_button');
-        calculate_button.addEventListener('click', calculate_total_price);
 
-        // Populate cuisine buttons
-        let cuisines = cuisine_tree.get_cuisines();
-        let cuisine_buttons_div = document.getElementById('cuisine_buttons');
-        for (let cuisine of cuisines) {
-            let cuisine_button = document.createElement('button');
-            cuisine_button.textContent = cuisine;
-            cuisine_button.addEventListener('click', () => {
-                let categories = cuisine_tree.get_categories(cuisine);
-                let category_buttons_div = document.getElementById('category_buttons');
-                category_buttons_div.innerHTML = '';
-                for (let category of categories) {
-                    let category_button = document.createElement('button');
-                    category_button.textContent = category;
-                    category_button.addEventListener('click', () => show_items_for_category(cuisine, category));
-                    category_buttons_div.appendChild(category_button);
-                }
-            });
-            cuisine_buttons_div.appendChild(cuisine_button);
-        }
+        // Display food items when the page loads
+        displayFoodItems();
     </script>
 </body>
 </html>
