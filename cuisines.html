@@ -18,6 +18,9 @@
     <div id="food_list_chinese">
         <h2>Chinese</h2>
     </div>
+    <div id="food_list_indian">
+        <h2>Indian</h2>
+    </div>
 
     <!-- Calculate total price -->
     <p>Total Price: Rs<span id="total_price_label">0.00</span></p>
@@ -31,8 +34,7 @@
                 { name: "Lasagna", price: 220 },
                 { name: "Caprese salad", price: 220 },
                 { name: "Garlic bread", price: 120 },
-                { name: "Lasagna", price: 220 },
-                { name: "chicken pasta", price: 160 },
+                { name: "Chicken pasta", price: 160 }
             ],
             Mexican: [
                 { name: "Tacos", price: 110 },
@@ -46,10 +48,17 @@
                 { name: "Kung Pao Chicken", price: 140 },
                 { name: "Fried Rice", price: 120 },
                 { name: "Chow Mein", price: 130 },
-                { name: "egg rolls", price:50 },
-                { name: "spring rolls", price:70 },
-                { name: "wontons", price: 120 },
-
+                { name: "Egg rolls", price: 50 },
+                { name: "Spring rolls", price: 70 },
+                { name: "Wontons", price: 120 }
+            ],
+            Indian: [
+                { name: "Butter Chicken", price: 250 },
+                { name: "Biryani", price: 220 },
+                { name: "Paneer Tikka", price: 200 },
+                { name: "Samosa", price: 100 },
+                { name: "Naan", price: 50 },
+                { name: "Rogan Josh", price: 240 }
             ]
         };
 
@@ -58,6 +67,7 @@
             displayFoodList('Italian', 'food_list_italian');
             displayFoodList('Mexican', 'food_list_mexican');
             displayFoodList('Chinese', 'food_list_chinese');
+            displayFoodList('Indian', 'food_list_indian');
         }
 
         // Function to display food items for a specific cuisine
