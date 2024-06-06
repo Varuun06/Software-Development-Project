@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Tree</title>
+    <style>
+        body {
+        margin: 0;
+        padding: 0;
+        background-image: url(background_image.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        }
+
+        .container1{
+            background-color: rgba(0, 0, 0, 0.7);
+            width: 400px; 
+            height: 150px; 
+            position: absolute; 
+            top: 250px;
+            left: 500px;
+            border:20px;
+
+        }
+        .tree ul {
+            padding-top: 20px;
+            position: relative;
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            display: none; /* Initially hide all submenus */
+        }
+
+        .tree > ul {
+            display: block; /* Ensure the root menu is visible */
+        }
+
+        .tree li {
+            text-align: left;
+            list-style-type: none;
+            position: relative;
+            padding: 5px 0 0 5px;
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+        }
+
+        .tree li a {
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: #666;
+            font-family: Arial, Verdana, Tahoma;
+            font-size: 14px;
+            display: inline-block;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            cursor: pointer;
+        }
+
+        .tree li a:hover {
+            background: #c8e4f8;
+            color: #000;
+            border: 1px solid #94a0b4;
+        }
+    </style>
+</head>
+<body>
+    <div class="tree">
+        <ul>
+            <li>
+                <a href="#" onclick="toggleVisibility(event)">Menu</a>
+                <ul>
+                    <li>
+                        <a href="#" onclick="toggleVisibility(event)">Indian</a>
+                        <ul>
+                            <li>
+                                <a href="#" onclick="toggleVisibility(event)">Main Dish</a>
+                                <ul>
+                                    <li><label><input type="checkbox" name="indian-main-dish" value="Biryani" id = "Biryani-el"> Biryani</label></li>
+                                    <li><label><input type="checkbox" name="indian-main-dish" value="Roti"> Roti</label></li>
+                                    <li><label><input type="checkbox" name="indian-main-dish" value="Chapati"> Chapati</label></li>
+                                    <li><label><input type="checkbox" name="indian-main-dish" value="Butter Chicken"> Butter Chicken</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" onclick="toggleVisibility(event)">Appetizers</a>
+                                <ul>
+                                    <li><label><input type="checkbox" name="indian-appetizers" value="Samosa"> Samosa</label></li>
+                                    <li><label><input type="checkbox" name="indian-appetizers" value="Vada"> Vada</label></li>
+                                    <li><label><input type="checkbox" name="indian-appetizers" value="Bhel Puri"> Bhel Puri</label></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" onclick="toggleVisibility(event)">International</a>
+                        <ul>
+                            <li>
+                                <a href="#" onclick="toggleVisibility(event)">Main Dish</a>
+                                <ul>
+                                    <li><label><input type="checkbox" name="international-main-dish" value="Pasta"> Pasta</label></li>
+                                    <li><label><input type="checkbox" name="international-main-dish" value="Pizza"> Pizza</label></li>
+                                    <li><label><input type="checkbox" name="international-main-dish" value="Burger"> Burger</label></li>
+                                    <li><label><input type="checkbox" name="international-main-dish" value="Sushi"> Sushi</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" onclick="toggleVisibility(event)">Appetizers</a>
+                                <ul>
+                                    <li><label><input type="checkbox" name="international-appetizers" value="Bruschetta"> Bruschetta</label></li>
+                                    <li><label><input type="checkbox" name="international-appetizers" value="Baguette"> Baguette</label></li>
+                                    <li><label><input type="checkbox" name="international-appetizers" value="Croissant"> Croissant</label></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class=" container1">
+        <center>
+        <h2>Total Price</h2>
+        <p id = "price-el"></p>
+        <button id = "button-el">Calculate</button>
+        <center>
+        </div>
+    </div>
+
+    <script src="../static/menu.js"> </script>
+</body>
+</html>
