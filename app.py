@@ -110,3 +110,5 @@ def menu_get():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+#OOMBA VARIYA NATHARI PUNDA
