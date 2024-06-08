@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 20;
+      padding: 0;
+      background-image: url("{{ url_for('static', filename='background_image.jpg') }}");
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 8px;
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: rgb(214, 192, 167);
+    }
+    
+    .filter-section {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    
+    .filter-section select {
+      width: 100%;
+      color: black;
+    }
+    
+    label {
+      display: block;
+      font-weight: bold;
+      font-family: "Poppins";
+      color: rgb(214, 192, 167);
+    }
+    
+    select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.7);
+      border-radius: 4px;
+      color: white;
+      font-family: "Poppins";
+    }
+    
+    .house-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .house-item {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      color: white;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+    
+    .house-item span {
+      font-weight: bold;
+      font-family: "Poppins";
+      color: white;
+    }
+
+    .house-item-actions {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .house-item-actions a {
+      text-decoration: none;
+      color: rgb(214, 192, 167);
+      margin-left: 10px;
+      font-style:"Poppins";
+      border-radius:8px;
+      border-color: #000;
+      font-size:16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Restaurant Table Reservations</h1>
+    
+    <div class="filter-section">
+      <div class="filter-item">
+        <label for="seater-filter">Filter by Seater:</label>
+        <select id="seater-filter" onchange="filterReservations()">
+          <option value="all">All Seaters</option>
+          <option value="2">2 Seater</option>
+          <option value="4">4 Seater</option>
+          <option value="6">6 Seater</option>
+          <option value="8">8 Seater</option>
+        </select>
+      </div>
+      
+      <div class="filter-item">
+        <label for="time-slot-filter">Filter by Time Slot:</label>
+        <select id="time-slot-filter" onchange="filterReservations()">
+          <option value="all">All Time Slots</option>
+          <option value="9:00 - 11:00">9:00-11:00</option>
+          <option value="11:00 - 13:00">11:00-13:00</option>
+          <option value="13:00 - 15:00">13:00-15:00</option>
+          <option value="15:00 - 17:00">15:00-17:00</option>
+          <option value="17:00 - 19:00">17:00-19:00</option>
+          <option value="19:00 - 21:00">19:00-21:00</option>
+        </select>
+      </div>
+    </div>
+    
+    <ul class="house-list">
+      {% for reservation in reservations %}
+      <li class="house-item" data-seater="{{ reservation['tableno'] }}" data-time-slot="{{ reservation['time'] }}">
+        Table Number: <span>{{ reservation['tableno'] }}</span><br>
+        Customer Name: <span>{{ reservation['name'] }}</span><br>
+        Date: <span>{{ reservation['date'] }}</span><br>
+        Time Slot: <span>{{ reservation['time'] }}</span><br>
+        <div class="house-item-actions">
+          <a href="{{ url_for('delete_reservation', tableno=reservation['tableno'], date=reservation['date'], time=reservation['time']) }}">Delete Table</a>
+          <a href="{{ url_for('view_reservation', tableno=reservation['tableno'], date=reservation['date'], time=reservation['time']) }}">View Customer Details</a>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <script>
+  function filterReservations() {
+    // Get selected values from the dropdowns
+    const seaterFilter = document.getElementById('seater-filter').value;
+    const timeSlotFilter = document.getElementById('time-slot-filter').value;
+
+    // Get all reservation items
+    const houseItems = document.querySelectorAll('.house-item');
+
+    houseItems.forEach(item => {
+      const itemSeater = item.getAttribute('data-seater');
+      const itemTimeSlot = item.getAttribute('data-time-slot');
+
+      // Check if the item matches the filters
+      const matchesSeater = (seaterFilter === 'all' || itemSeater === seaterFilter);
+      const matchesTimeSlot = (timeSlotFilter === 'all' || itemTimeSlot === timeSlotFilter);
+
+      // Show or hide the item based on the filters
+      if (matchesSeater && matchesTimeSlot) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

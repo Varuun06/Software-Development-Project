@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Form</title>
+    <style>
+        body {
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{{ url_for('static', filename='rest.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            padding: 2rem;
+        }
+        .container {
+            background-color: rgb(84, 70, 57);
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1.5rem;
+            color: rgb(255, 204, 102);
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 200;
+            font-family: 'Playfair Display', serif;
+            color: rgb(255, 204, 102);
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-bottom: 1.5rem;
+        }
+        .button1 {
+            background-color: white;
+            color: black;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin: auto;
+            transition: background-color 0.3s;
+        }
+        .button1:hover {
+            background-color: rgb(228, 174, 65);
+        }
+        .flash-message {
+            background-color: red;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeSelect = document.getElementById('time');
+            const startTime = 9;  // 9 AM
+            const endTime = 21;   // 9 PM
+            const interval = 2;   // 2 hours
+
+            for (let hour = startTime; hour < endTime; hour += interval) {
+                let startTimeString = hour.toString().padStart(2, '0') + ':00';
+                let endTimeString = (hour + interval).toString().padStart(2, '0') + ':00';
+                let timeOption = document.createElement('option');
+                timeOption.value = startTimeString + ' - ' + endTimeString;
+                timeOption.text = startTimeString + ' - ' + endTimeString;
+                timeSelect.appendChild(timeOption);
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Table Reservation</h1><br>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-message">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <form method="post" action="{{ url_for('table_booking') }}">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="people">No. of people:</label>
+            <input type="number" max="8" min="2" step="2" id="tableno" name="tableno" required>
+
+            <label for="date">Preferred Date:</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="time">Preferred Time:</label>
+            <select id="time" name="time" required></select><br>
+            
+            <button type="submit" class="button1">Book Table</button>
+        </form>
+    </div>
+</body>
+</html>
+
+

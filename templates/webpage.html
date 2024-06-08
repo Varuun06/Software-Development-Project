@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700&display=swap">
+
+<style>
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-image:  url("{{ url_for('static', filename='background_image.jpg') }}");;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
+  .container1{
+    background-color: rgba(0, 0, 0, 0.7); 
+    width: 400px; 
+    height: 200px; 
+    position: absolute; 
+    top: 120px; 
+    left: 450px;
+  }
+
+  .container2{
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 400px; 
+    height: 150px; 
+    position: absolute; 
+    top: 225px;
+  }
+
+  .h1{
+    color: white; 
+    font-size: 25px; 
+    font-family: 'Playfair Display', serif;
+  }
+
+  .h2{
+    color: rgb(214, 192, 167); 
+    font-size: 25px; 
+    font-family: 'Playfair Display', serif;
+  }
+
+  .button1{
+      height: 40px;
+      width:250px;
+      position: absolute;
+      top: 260px;
+      left: 75px;
+      background-color: rgba(0, 0, 0, 0);
+      color:rgb(214, 192, 167);
+      font-size: 11px;
+      font-family: 'Playfair Display', serif;
+      border-radius: 10px;
+  }
+  
+  .button2{
+      height:40px;
+      width:250px;
+      position: absolute;
+      top: 300px;
+      left: 75px;
+      background-color: rgba(0, 0, 0, 0);
+      color:rgb(214, 192, 167);
+      font-size: 11px;
+      font-family: 'Playfair Display', serif;
+      border-radius: 10px;
+  }
+</style>
+</head>
+<body>
+    <center>
+    <div class="container1">
+      <div class="h1">
+        <h1>Hotel Taj</h1>
+      <div class="h2">
+        <p>Your favourite stop :)</p>
+      </div>
+      </div>
+    <div class="container2"></div>
+      <a href="{{ url_for('customer_login') }}">
+      <button class="button1">CUSTOMER LOGIN</button></a>
+      <a href="{{ url_for('admin_login') }}">
+      <button class="button2">ADMIN LOGIN</button></a>
+      </center>
+    </div>
+</body>
+</html> 

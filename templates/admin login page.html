@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-image:  url("{{ url_for('static', filename='background_image.jpg') }}");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  .container{
+    background-color: rgba(0, 0, 0, 0.7); 
+    width: 400px; 
+    height: 400px;
+    position: absolute; 
+    top: 120px; 
+    left: 450px;
+  }
+  .h1{
+    color: white; 
+    font-size: 25px; 
+    font-family: 'Playfair Display', serif;
+  }
+  .form{
+    margin-top: 50px;
+  }
+  .button1{
+    height: 30px;
+    width: 100px;
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: rgb(214, 192, 167);
+    font-size: 12px;
+    font-family: 'Playfair Display', serif;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  input[type="text"], input[type="password"]{
+    width: 250px;
+    height: 25px;
+    margin-top: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-style: oblique;
+    font-family: 'Playfair Display', serif;
+    border-radius: 10px;
+    border: none;
+    padding: 5px;
+  }
+  .link{
+    color: rgb(214, 192, 167);
+    font-family: 'Playfair Display', serif;
+  }
+  .text{
+    margin-top: 20px;
+    color: white; 
+    font-size: 15px; 
+  }
+</style>
+
+<script>
+function showInvalidCredentialsPopup() {
+  alert("Invalid credentials, please try again.");
+}
+</script>
+</head>
+<body>
+  <center>
+    <div class="container">
+      <div class="h1">
+        <h1>Admin Login</h1>
+      </div>
+      <div class="form">
+        <form method="POST" action="{{ url_for('admin_login') }}">
+          <input type="text" id="username" name="username" placeholder="Username">
+          <br>
+          <input type="password" id="password" name="password" placeholder="Password">
+          <br>
+          <button type="submit" class="button1">LOG IN</button>
+        </form>
+      </div>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <script>
+          showInvalidCredentialsPopup();
+        </script>
+      {% endif %}
+      {% endwith %}
+    </div>
+  </center>
+</body>
+</html>
+

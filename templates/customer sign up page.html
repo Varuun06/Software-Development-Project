@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Customer Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700&display=swap">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("{{ url_for('static', filename='background_image.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container{
+            background-color: rgba(0, 0, 0, 0.7); 
+            width: 400px; 
+            height: 400px;
+            position: absolute; 
+            top: 120px; 
+            left: 450px;
+        }
+
+        .h1{
+            color: white; 
+            font-size: 20px; 
+            font-family: 'Playfair Display', serif;
+        }
+
+        .form{
+            margin-top: 50px;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"]{
+            width: 250px;
+            height: 25px;
+            position: absolute;
+            left: 70px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-style: oblique;
+            font-family: 'Playfair Display', serif;
+            border-radius: 10px;
+        }
+
+        input[type="text"]{
+            top: 150px;
+        }
+
+        input[type="email"]{
+            top: 195px;
+        }
+
+        input[type="password"]{
+            top: 240px;
+        }
+
+        .button1{
+            height: 30px;
+            position: absolute;
+            left: 150px;
+            top: 290px;
+            width: 100px;
+            margin-top: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: rgb(214, 192, 167);
+            font-size: 12px;
+            font-family: 'Playfair Display', serif;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <div class="container">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <script>
+                    alert("{{ messages[0] }}");
+                </script>
+            {% endif %}
+            {% endwith %}
+            <div class="h1">
+                <h1>Customer Sign Up</h1>
+            </div>
+            <div class="form">
+                <form id="signupForm">
+                    <input type="text" id="phone_number" name="phone_number" required placeholder="Phone Number">
+                    <br><br>
+                    <input type="email" id="email" name="email" required placeholder="Email Address">
+                    <br><br>
+                    <input type="password" id="password" name="password" required placeholder="Password">
+                    <br><br>
+                    <button type="submit" class="button1">Sign Up</button>
+                </form>
+                <p style="color: white;">Already have an account? <a href="{{ url_for('customer_login') }}" style="color: rgb(214, 192, 167);">Login</a></p>
+            </div>
+        </div>
+    </center>
+
+    <script>
+      document.getElementById('signupForm').addEventListener('submit', function(event) {
+          event.preventDefault();
+          const formData = new FormData(event.target);
+          const data = {
+              phone_number: formData.get('phone_number'),
+              email: formData.get('email'),
+              password: formData.get('password')
+          };
+  
+          fetch('/signup', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+          })
+          .then(response => response.json())
+          .then(result => {
+              alert(result.message);
+              if (result.success) {
+                  window.location.href = "{{ url_for('customer_login') }}";
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+      });
+  </script>
+  
+</body>
+</html>
+

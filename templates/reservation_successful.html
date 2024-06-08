@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+    <style>
+        /* Add your CSS styles here */
+        body {
+            background-image: url("{{ url_for('static', filename='rest.jpg') }}");
+            background-size: cover;
+            font-family: "Poppins";
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .container {
+            width: 60%;
+            position: absolute;
+            top: 30%;
+            left: 18%;
+            padding: 20px;
+            background-color: rgb(84, 70, 57);
+            border-radius: 10px;
+        }
+
+        h1 {
+            color:rgb(255, 204, 102);
+            text-align: center;
+        }
+
+        .success-message {
+            font-size: 18px;
+            color: #000;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .conclusion-message {
+            font-size: 18px;
+            color: rgb(255, 204, 102);
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 25px;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Reservation Successful</h1>
+    <p class="success-message">You have successfully made the reservation!</p>
+    <p class="conclusion-message">THANK YOU FOR AVAILING OUR SERVICES!!</p>
+    <p ><center><a href="{{ url_for('home') }}" class="conclusion-message">Return to Homepage</a></center></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Tree</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("{{ url_for('static', filename='background_image.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container1 {
+            background-color: rgba(0, 0, 0, 0.7);
+            width: 400px;
+            height: 150px;
+            position: absolute;
+            top: 250px;
+            left: 500px;
+            border: 20px;
+        }
+
+        .tree ul {
+            padding-top: 20px;
+            position: relative;
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            display: none;
+        }
+
+        .tree > ul {
+            display: block;
+        }
+
+        .tree li {
+            text-align: left;
+            list-style-type: none;
+            position: relative;
+            padding: 5px 0 0 5px;
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+        }
+
+        .tree li a {
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: #666;
+            font-family: Arial, Verdana, Tahoma;
+            font-size: 14px;
+            display: inline-block;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            cursor: pointer;
+        }
+
+        .tree li a:hover {
+            background: #c8e4f8;
+            color: #000;
+            border: 1px solid #94a0b4;
+        }
+    </style>
+</head>
+<body>
+    <div class="tree">
+        <ul>
+            <li>
+                <a href="#" onclick="toggleVisibility(event)">Menu</a>
+                <ul>
+                    <li>
+                        <a href="#" onclick="toggleVisibility(event)">Indian</a>
+                        <ul>
+                            <li>
+                                <a href="#" onclick="toggleVisibility(event)">Main Dish</a>
+                                <ul>
+                                    <li><label><input type="checkbox" name="indian-main-dish" value="Biryani"> Biryani</label></li>
+                                    <li><label><input type="checkbox" name="indian-main-dish" value="Roti"> Roti</label></li>
+                                    <li><label><input type="checkbox" name="indian-main-dish" value="Chapati"> Chapati</label></li>
+                                    <li><label><input type="checkbox" name="indian-main-dish" value="Butter Chicken"> Butter Chicken</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" onclick="toggleVisibility(event)">Appetizers</a>
+                                <ul>
+                                    <li><label><input type="checkbox" name="indian-appetizers" value="Samosa"> Samosa</label></li>
+                                    <li><label><input type="checkbox" name="indian-appetizers" value="Vada"> Vada</label></li>
+                                    <li><label><input type="checkbox" name="indian-appetizers" value="Bhel Puri"> Bhel Puri</label></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" onclick="toggleVisibility(event)">International</a>
+                        <ul>
+                            <li>
+                                <a href="#" onclick="toggleVisibility(event)">Main Dish</a>
+                                <ul>
+                                    <li><label><input type="checkbox" name="international-main-dish" value="Pasta"> Pasta</label></li>
+                                    <li><label><input type="checkbox" name="international-main-dish" value="Pizza"> Pizza</label></li>
+                                    <li><label><input type="checkbox" name="international-main-dish" value="Burger"> Burger</label></li>
+                                    <li><label><input type="checkbox" name="international-main-dish" value="Sushi"> Sushi</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" onclick="toggleVisibility(event)">Appetizers</a>
+                                <ul>
+                                    <li><label><input type="checkbox" name="international-appetizers" value="Bruschetta"> Bruschetta</label></li>
+                                    <li><label><input type="checkbox" name="international-appetizers" value="Baguette"> Baguette</label></li>
+                                    <li><label><input type="checkbox" name="international-appetizers" value="Croissant"> Croissant</label></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="container1">
+            <center>
+                <h2>Total Price</h2>
+                <p id="price-el"></p>
+                <button id="button-el">Calculate</button>
+                <br><br>
+                <form action="{{ url_for('reservation_successful') }}" method="get">
+                    <button type="submit">Proceed</button>
+                </form>
+            </center>
+        </div>
+    </div>
+
+    <script>
+        function toggleVisibility(event) {
+            const nextSibling = event.target.nextElementSibling;
+            if (nextSibling.style.display === "block") {
+                nextSibling.style.display = "none";
+            } else {
+                nextSibling.style.display = "block";
+            }
+        }
+
+        document.getElementById('button-el').addEventListener('click', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            const selectedItems = Array.from(checkboxes).map(checkbox => checkbox.value);
+            const email = "viala@gmail.com"; // Replace with the actual user email
+
+            fetch('/calculate_cost', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+             },
+                body: JSON.stringify({
+                    items: selectedItems,
+                    email: email  // Include email in the request body
+                }),
+            })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('price-el').innerText = `Total Price: ${data}`;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+    </script>
+</body>
+</html>
+

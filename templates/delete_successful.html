@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='rest.jpg') }}");
+            background-size: cover;
+            font-family: "Poppins";
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .container {
+            width: 60%;
+            position: absolute;
+            top: 30%;
+            left: 18%;
+            padding: 20px;
+            background-color: rgb(84, 70, 57);
+            border-radius: 10px;
+        }
+
+        h1 {
+            color:rgb(255, 204, 102);
+            text-align: center;
+        }
+
+        .success-message {
+            font-size: 18px;
+            color: #000;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .home-link {
+            display: block;
+            font-size: 18px;
+            color: rgb(255, 204, 102);
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Deletion Successful</h1>
+    <p class="success-message">You have successfully deleted the reservation.</p>
+    <a href="{{ url_for('display_tables') }}" class="home-link">Go back to Display Tables</a>
+</div>
+</body>
+</html>
