@@ -24,6 +24,7 @@
             position: absolute; 
             top: 120px; 
             left: 450px;
+            border-radius: 8px;
         }
 
         .h1{
@@ -49,15 +50,15 @@
         }
 
         input[type="text"]{
-            top: 150px;
+            top: 140px;
         }
 
         input[type="email"]{
-            top: 195px;
+            top: 185px;
         }
 
         input[type="password"]{
-            top: 240px;
+            top: 230px;
         }
 
         .button1{
@@ -98,6 +99,7 @@
                     <br><br>
                     <button type="submit" class="button1">Sign Up</button>
                 </form>
+                <br>
                 <p style="color: white;">Already have an account? <a href="{{ url_for('customer_login') }}" style="color: rgb(214, 192, 167);">Login</a></p>
             </div>
         </div>
