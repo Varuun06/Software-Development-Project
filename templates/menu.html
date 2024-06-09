@@ -8,25 +8,38 @@
         body {
             margin: 0;
             padding: 0;
-            background-image: url("{{ url_for('static', filename='background_image.jpg') }}");
+            background-image: url("{{ url_for('static', filename='rest.jpg') }}");
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
-
+        
         .container1 {
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgb(84, 70, 57);
             width: 400px;
-            height: 150px;
+            height: 200px;
             position: absolute;
-            top: 250px;
-            left: 500px;
+            top: 400px;
+            left: 450px;
             border: 20px;
+            border-radius: 8px;
+        }
+        h2 {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1.5rem;
+            color: rgb(255, 204, 102);
+        }
+        p{
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1.5rem;
+            color: white;
+
         }
 
         .tree ul {
             padding-top: 20px;
-            position: relative;
             transition: all 0.5s;
             -webkit-transition: all 0.5s;
             -moz-transition: all 0.5s;
@@ -36,9 +49,12 @@
         .tree > ul {
             display: block;
         }
+        .tree li ul li ul li {
+            display: inline-block;
+            margin-right: 10px; 
+        }
 
         .tree li {
-            text-align: left;
             list-style-type: none;
             position: relative;
             padding: 5px 0 0 5px;
@@ -51,7 +67,8 @@
             border: 1px solid #ccc;
             padding: 5px 10px;
             text-decoration: none;
-            color: #666;
+            color: black;
+            background: white;
             font-family: Arial, Verdana, Tahoma;
             font-size: 14px;
             display: inline-block;
@@ -63,21 +80,40 @@
             -moz-transition: all 0.5s;
             cursor: pointer;
         }
+        .button1{
+            background-color: white;
+            color: black;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin: auto;
+            transition: background-color 0.3s;
+            height: 30px;
+            width: 100px;
+            margin-top: 20px;
+        }
+        .button1:hover {
+            background-color: rgb(228, 174, 65);
+        }
 
         .tree li a:hover {
-            background: #c8e4f8;
+            background: rgb(255, 204, 102);
             color: #000;
-            border: 1px solid #94a0b4;
+            border: 1px solid;
         }
     </style>
 </head>
-<body>
-    <div class="tree">
+<body> 
+    <div class="tree">  
         <ul>
             <li>
+                <center> 
                 <a href="#" onclick="toggleVisibility(event)">Menu</a>
                 <ul>
                     <li>
+                        <center>
                         <a href="#" onclick="toggleVisibility(event)">Indian</a>
                         <ul>
                             <li>
@@ -100,6 +136,7 @@
                         </ul>
                     </li>
                     <li>
+                        <center>
                         <a href="#" onclick="toggleVisibility(event)">International</a>
                         <ul>
                             <li>
@@ -120,18 +157,20 @@
                                 </ul>
                             </li>
                         </ul>
+                        </center>
+                    </center>
                     </li>
                 </ul>
             </li>
         </ul>
+    </center>
         <div class="container1">
             <center>
                 <h2>Total Price</h2>
                 <p id="price-el"></p>
-                <button id="button-el">Calculate</button>
-                <br><br>
+                <button class="button1" id="button-el">Calculate</button>
                 <form action="{{ url_for('reservation_successful') }}" method="get">
-                    <button type="submit">Proceed</button>
+                    <button class ="button1" type="submit">Proceed</button>
                 </form>
             </center>
         </div>
@@ -174,4 +213,3 @@
     </script>
 </body>
 </html>
-
