@@ -22,10 +22,11 @@
     position: absolute; 
     top: 120px; 
     left: 450px;
+    border-radius: 8px;
   }
   .h1{
     color: white; 
-    font-size: 25px; 
+    font-size: 22px; 
     font-family: 'Playfair Display', serif;
   }
   .form{
@@ -64,6 +65,9 @@
     color: white; 
     font-size: 15px; 
   }
+  .lab{
+    color: white;
+  }
 </style>
 <script>
 function showInvalidCredentialsPopup() {
@@ -86,9 +90,9 @@ function showInvalidCredentialsPopup() {
     </div>
     <div class="form">
       <form method="post" action="{{ url_for('customer_login') }}">
-        <label for="phone_number">Phone number:</label>
+        <label class="lab" for="phone_number">PhoneNo.:</label>
         <input type="text" id="phone_number" name="phone_number" required placeholder="Phone Number"><br>
-        <label for="password">Password:</label>
+        <label class="lab" for="password">Password:</label>
         <input type="password" id="password" name="password" required placeholder="Password"><br>
         <input type="submit" class="button1" value="Login">
       </form>
@@ -101,5 +105,6 @@ function showInvalidCredentialsPopup() {
 </center>
 </body>
 </html>
+
 
 
