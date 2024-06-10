@@ -5,6 +5,8 @@ import random
 import string
 from email.message import EmailMessage 
 import os
+from random import randint
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -56,13 +58,33 @@ def load_reservations():
             for line in file:
                 if line.strip():
                     try:
-                        reservations.append(json.loads(line.strip()))
+                        reservation = json.loads(line.strip())
+                        # Trim whitespace from time field
+                        reservation['time'] = reservation['time'].strip()
+                        reservations.append(reservation)
                     except json.JSONDecodeError:
                         flash('Error loading reservation data.')
                         continue
     except FileNotFoundError:
-        pass
+        flash('No reservation data found.')
     return reservations
+
+def l_orders():
+    orders=[]
+    try:
+        with open('menuorder.txt','r') as file:
+            for line in file:
+                if line.strip():
+                    try:
+                        order = json.loads(line.strip())
+                        orders.append(order)
+                    except json.JSONDecodeError:
+                        flash('Error loading reservation data.')
+                        continue
+    except FileNotFoundError:
+        flash('No reservation data found.')
+    return orders
+                    
 
 def load_orders():
     try:
@@ -70,6 +92,12 @@ def load_orders():
             return json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
+    
+def write_orders(orders):
+        with open('menuorder.txt', 'w') as file:
+            for order in orders:
+                file.write(json.dumps(order) + '\n')
+
 
 def save_reservations(reservations):
     with open('bookingdetails.txt', 'w') as file:
@@ -167,6 +195,7 @@ def customer_login():
         
         user_data = load_user_data()
         user = user_data.get(phone_number)
+        session['email'] = user["email"]
         if user and user['password'] == password:
             return redirect(url_for('table_booking', phone_number=phone_number))
         else:
@@ -214,6 +243,8 @@ def signup():
     password = data['password']
     
     user_data = load_user_data()
+    if not phone_number.isdigit() or len(phone_number) != 10:
+        return jsonify({"message": "Enter a valid phone number.", "success": False})
     if phone_number in user_data:
         return jsonify({"message": "Phone number already exists.", "success": False})
     
@@ -277,8 +308,25 @@ def table_booking():
         tableno = request.form['tableno']
         date = request.form['date']
         time = request.form['time']
-
+        booking_no = randint(100, 1000)
+        session['bookid'] = booking_no
         reservations = load_reservations()
+
+        if name.isdigit():
+            flash('Enter a valid name.')
+            return redirect(url_for('table_booking'))
+
+        
+        # Combine date and time for comparison
+        booking_datetime_str = f"{date} {time.split(' - ')[0]}"
+        booking_datetime = datetime.strptime(booking_datetime_str, '%Y-%m-%d %H:%M')
+        now = datetime.now()
+        
+        # Server-side validation for past date and time
+        if booking_datetime < now:
+            flash('Cannot book for past date and time. Please choose a future date and time.')
+            return redirect(url_for('table_booking'))
+        
         for reservation in reservations:
             if reservation['tableno'] == tableno and reservation['date'] == date and reservation['time'] == time:
                 flash('This table has already been booked for the selected date and time. Please choose a different table or time.')
@@ -288,14 +336,15 @@ def table_booking():
             'name': name,
             'tableno': tableno,
             'date': date,
-            'time': time
+            'time': time,
+            'booking_no': booking_no
         }
-        
         with open('bookingdetails.txt', 'a') as file:
             file.write(json.dumps(reservation_data) + '\n')
         
         flash('Table booked successfully.')
         return redirect(url_for('menu_page'))
+    
     return render_template("table_booking.html")
 
 @app.route('/menu_page', methods=['GET', 'POST'])
@@ -306,7 +355,8 @@ def menu_page():
 def calculate_cost():
     data = request.get_json()
     list_food = data.get("items")
-    email = data.get("email")  # Assuming you get the email from the request to identify the user
+    email = data.get("email")
+    # Assuming you get the email from the request to identify the user
     cost = 0
     order_details = []
 
@@ -318,9 +368,10 @@ def calculate_cost():
 
     # Prepare the order data to save
     order_data = {
-        "email": email,
+        "email": session.get('email'),
         "order_details": order_details,
-        "total_cost": cost
+        "total_cost": cost,
+        "booking_no": session.get('bookid')
     }
 
     # Write the order details to menuorder.txt
@@ -353,22 +404,42 @@ def display_tables():
     python_reservations = load_reservations()
     return render_template("display_tables.html", reservations=python_reservations)
 
-@app.route("/delete_reservation/<int:tableno>/<date>/<time>", methods=['GET'])
-def delete_reservation(tableno, date, time):
+@app.route("/delete_reservation/<int:tableno>/<date>/<time>/<bookid>", methods=['GET'])
+def delete_reservation(tableno, date, time,bookid):
     reservations = load_reservations()
-    new_reservations = [r for r in reservations if not (str(r['tableno']) == str(tableno) and str(r['date']) == str(date) and str(r['time']) == str(time))]
+    new_reservations=[]
+    for r in reservations:
+        if r['booking_no']==int(bookid):
+            pass
+        else:
+            new_reservations.append(r)
+    orders = l_orders()
+    print(orders)
+    new_orders=[]
+    for o in orders:
+        if o['booking_no']==int(bookid):
+            pass
+        else:
+            new_orders.append(o)
+    print(new_orders)
+    write_orders(new_orders)
     save_reservations(new_reservations)
+    print(new_reservations)
     return redirect(url_for('delete_successful'))
-@app.route("/view_reservation/<int:tableno>/<date>/<time>", methods=['GET'])
-def view_reservation(tableno, date, time):
+
+@app.route("/view_reservation/<int:tableno>/<date>/<time>/<bookid>", methods=['GET'])
+def view_reservation(tableno, date, time,bookid):
     reservations = load_reservations()
-    reservation = next((r for r in reservations if str(r['tableno']) == str(tableno) and str(r['date']) == str(date) and str(r['time']) == str(time)), None)
+    reservation = next((r for r in reservations if str(r['tableno']) == str(tableno) and str(r['date']) == str(date) and str(r['time']) == str(time) and str(r['booking_no'])==str(bookid)), None)
+    print(reservation)
     if not reservation:
         flash('Reservation not found')
         return redirect(url_for('display_tables'))
 
     phone_number = reservation.get('name', 'N/A')  # Assuming name is the phone number used for reservation
+
     user_data = load_user_data()
+    #print(user_data)
     user = user_data.get(phone_number, {})
     
     customer_info = {
@@ -377,7 +448,8 @@ def view_reservation(tableno, date, time):
         'date': reservation.get('date', 'N/A'),
         'time': reservation.get('time', 'N/A'),
         'seater_status': reservation.get('tableno', 'N/A'),
-        'menu_availed': 'No',
+        'order_id':reservation.get('booking_no',"N/A"),
+        
         'menu': [],
         'total_cost': 0
     }
@@ -394,15 +466,26 @@ def view_reservation(tableno, date, time):
         pass
 
     # Check if this customer has availed the menu
-    customer_orders = [order for order in orders if order['email'] == user.get('email', 'N/A')]
+    print(orders)
+    customer_orders=[]
+
+    for order in orders:
+        if order['booking_no']==int(reservation.get('booking_no')):
+            email=order['email']
+            total_cost=order["total_cost"]
+            customer_orders=order['order_details']
+    print(customer_orders)
     if customer_orders:
         customer_info['menu_availed'] = 'Yes'
-        # Assuming we want to accumulate all orders for the customer
         for order in customer_orders:
-            customer_info['menu'].extend(order['order_details'])
-            customer_info['total_cost'] += order['total_cost']
+                print(order)
+                customer_info['menu'].append(order["item"])
+        print(customer_info['menu'])
+    else:
+        customer_info['menu_availed']='No'
+    
+    return render_template("user_info_display.html", **customer_info, orders=customer_orders, total=total_cost,useremail=email)
 
-    return render_template("user_info_display.html", **customer_info)
 @app.route("/vie_reservation/<int:tableno>/<date>/<time>", methods=['GET'])
 def vie_reservation(tableno, date, time):
     reservations = load_reservations()
@@ -411,7 +494,7 @@ def vie_reservation(tableno, date, time):
         flash('Reservation not found')
         return redirect(url_for('display_tables'))
 
-    phone_number = reservation.get('name', 'N/A')  # Assuming name is the phone number used for reservation
+    phone_number = reservation.get('name', 'N/A') 
     user_data = load_user_data()
     user = user_data.get(phone_number, {})
     
@@ -442,7 +525,6 @@ def delete_successful():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
 
 
 
